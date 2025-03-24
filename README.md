@@ -23,7 +23,7 @@ This project aims to develop an adaptive scheduling system that enhances system 
 
 Special Thanks
 
-### Team Members
+- Team Members
 - Ritika Yadav, Regis. No: 12306272, Roll No: 15
 
 - Sahil, Regis. No: 12310992, Roll No: 60
