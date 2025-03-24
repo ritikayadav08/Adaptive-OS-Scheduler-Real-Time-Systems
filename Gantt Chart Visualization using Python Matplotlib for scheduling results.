@@ -1,0 +1,34 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+# Sample data for tasks (Task ID, Start Time, Duration)
+tasks = [
+    {'id': 'Task 1', 'start': 0, 'duration': 3},  # Task 1 starts at 0 and lasts for 3 time units
+    {'id': 'Task 2', 'start': 3, 'duration': 2},  # Task 2 starts after Task 1 finishes
+    {'id': 'Task 3', 'start': 5, 'duration': 4},  # Task 3 starts overlapping with Task 2
+    {'id': 'Task 4', 'start': 7, 'duration': 1}   # Task 4 starts after Task 3
+]
+
+# Create a DataFrame to hold the task data
+df = pd.DataFrame(tasks)
+df['end'] = df['start'] + df['duration']  # Calculate end times
+
+# Create the Gantt chart
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Adding each task to the Gantt chart
+for index, row in df.iterrows():
+    ax.barh(row['id'], row['duration'], left=row['start'], color='skyblue')
+
+# Customize the chart
+ax.set_xlabel('Time (units)')
+ax.set_ylabel('Tasks')
+ax.set_title('Gantt Chart for Adaptive OS Scheduler')
+ax.grid(True)
+
+# Set x-ticks to represent time units
+plt.xticks(np.arange(0, df['end'].max() + 1, 1))
+
+# Show the Gantt chart
+plt.show()
