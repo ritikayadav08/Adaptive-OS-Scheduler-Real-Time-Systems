@@ -1,0 +1,42 @@
+#include <iostream>
+#include <queue>
+#include <unistd.h>
+
+using namespace std;
+
+struct Task {
+    int pid;
+    int burstTime;
+    int deadline;
+
+    bool operator<(const Task& t) const {
+        return deadline > t.deadline; // Earliest Deadline First (EDF)
+    }
+};
+
+priority_queue<Task> taskQueue;
+
+void addTask(int pid, int burst, int deadline) {
+    taskQueue.push({pid, burst, deadline});
+}
+
+void runScheduler() {
+    while (!taskQueue.empty()) {
+        Task t = taskQueue.top();
+        taskQueue.pop();
+
+        cout << "Running Process " << t.pid << " for " << t.burstTime << "s (Deadline: " << t.deadline << ")\n";
+        sleep(t.burstTime);
+    }
+}
+
+int main() {
+    addTask(1, 3, 10);
+    addTask(2, 4, 7);
+    addTask(3, 2, 12);
+
+    cout << "Starting CPU Scheduler...\n";
+    runScheduler();
+
+    return 0;
+}
