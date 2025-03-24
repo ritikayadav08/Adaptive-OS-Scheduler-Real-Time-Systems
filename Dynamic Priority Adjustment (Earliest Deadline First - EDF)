@@ -1,0 +1,54 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+
+using namespace std;
+
+struct Task {
+    int pid;
+    int arrivalTime;
+    int burstTime;
+    int priority;
+    int deadline;
+
+    bool operator<(const Task& t) const {
+        return deadline > t.deadline;  // Min-Heap based on earliest deadline
+    }
+};
+
+priority_queue<Task> taskQueue;
+
+// Adjust priority dynamically based on deadline
+void adjustPriority() {
+    vector<Task> temp;
+    
+    while (!taskQueue.empty()) {
+        Task t = taskQueue.top();
+        taskQueue.pop();
+        
+        // Dynamically increase priority if the deadline is near
+        if (t.deadline - t.arrivalTime < 5)
+            t.priority += 1; 
+
+        temp.push_back(t);
+    }
+
+    for (auto t : temp)
+        taskQueue.push(t);
+}
+
+void addTask(int pid, int arrival, int burst, int priority, int deadline) {
+    Task newTask = {pid, arrival, burst, priority, deadline};
+    taskQueue.push(newTask);
+}
+
+int main() {
+    addTask(1, 0, 5, 3, 10);
+    addTask(2, 2, 3, 2, 7);
+    addTask(3, 4, 6, 1, 12);
+
+    adjustPriority();
+    
+    cout << "Priority Adjusted based on Deadlines!\n";
+    return 0;
+}
