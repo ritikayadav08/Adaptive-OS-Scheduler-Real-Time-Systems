@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct Task {
+    int pid;
+    int arrivalTime;
+    int burstTime;
+    int completionTime;
+};
+
+vector<Task> finishedTasks;
+
+void addFinishedTask(int pid, int arrival, int burst, int completion) {
+    finishedTasks.push_back({pid, arrival, burst, completion});
+}
+
+void calculateMetrics() {
+    float avgWaitTime = 0, avgTAT = 0;
+    for (auto& t : finishedTasks) {
+        int waitTime = t.completionTime - t.arrivalTime - t.burstTime;
+        int tat = t.completionTime - t.arrivalTime;
+        
+        cout << "Process " << t.pid << " - Waiting Time: " << waitTime << ", TAT: " << tat << "\n";
+        
+        avgWaitTime += waitTime;
+        avgTAT += tat;
+    }
+
+    cout << "\nAverage Waiting Time: " << avgWaitTime / finishedTasks.size();
+    cout << "\nAverage Turnaround Time: " << avgTAT / finishedTasks.size() << "\n";
+}
+
+int main() {
+    addFinishedTask(1, 0, 5, 10);
+    addFinishedTask(2, 2, 3, 9);
+    addFinishedTask(3, 4, 6, 16);
+
+    cout << "Performance Metrics:\n";
+    calculateMetrics();
+
+    return 0;
+}
